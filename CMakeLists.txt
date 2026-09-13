@@ -14,12 +14,17 @@ include(FetchContent)
 
 FetchContent_Declare(imgui
     GIT_REPOSITORY https://github.com/ocornut/imgui.git
-    GIT_TAG v1.90.4 GIT_SHALLOW TRUE)
+    GIT_TAG v1.90.4
+    GIT_SHALLOW TRUE)
 FetchContent_MakeAvailable(imgui)
 
+# Dobby — v0.4.0 (актуальный релизный тег; v1.0.0 не существует)
+set(DOBBY_GENERATE_SHARED OFF CACHE BOOL "" FORCE)
+set(DOBBY_DEBUG OFF CACHE BOOL "" FORCE)
 FetchContent_Declare(dobby
     GIT_REPOSITORY https://github.com/jmpews/Dobby.git
-    GIT_TAG v1.0.0 GIT_SHALLOW TRUE)
+    GIT_TAG v0.4.0
+    GIT_SHALLOW TRUE)
 FetchContent_MakeAvailable(dobby)
 
 set(IMGUI_SOURCES
@@ -57,10 +62,18 @@ target_compile_definitions(airware PRIVATE
     GL_GLEXT_PROTOTYPES)
 
 target_link_libraries(airware PRIVATE
-    dobby android log GLESv3 EGL)
+    dobby
+    android
+    log
+    GLESv3
+    EGL)
 
-set_target_properties(airware PROPERTIES PREFIX "" OUTPUT_NAME "libairware")
+set_target_properties(airware PROPERTIES
+    PREFIX ""
+    OUTPUT_NAME "libairware")
 
 add_executable(injector injector/injector.cpp)
 target_link_libraries(injector PRIVATE dl)
-set_target_properties(injector PROPERTIES PREFIX "" OUTPUT_NAME "injector")
+set_target_properties(injector PROPERTIES
+    PREFIX ""
+    OUTPUT_NAME "injector")
