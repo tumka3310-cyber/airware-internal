@@ -18,11 +18,11 @@ FetchContent_Declare(imgui
     GIT_SHALLOW TRUE)
 FetchContent_MakeAvailable(imgui)
 
-# Dobby — версионных тегов нет; тянем master
+# BepInEx/Dobby — форк jmpews/Dobby с исправлениями стабильности
 set(DOBBY_GENERATE_SHARED OFF CACHE BOOL "" FORCE)
 set(DOBBY_DEBUG OFF CACHE BOOL "" FORCE)
 FetchContent_Declare(dobby
-    GIT_REPOSITORY https://github.com/jmpews/Dobby.git
+    GIT_REPOSITORY https://github.com/BepInEx/Dobby.git
     GIT_TAG master
     GIT_SHALLOW TRUE)
 FetchContent_MakeAvailable(dobby)
