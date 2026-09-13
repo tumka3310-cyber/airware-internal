@@ -8,7 +8,7 @@ void render() {
     if (!cfg::misc.watermark) return;
 
     ImGuiIO& io = ImGui::GetIO();
-    const char* text = "Airware Internal
+    const char* text = "Airware Internal  |  Standoff 2  v0.39.4  |  arm64";
 
     ImVec2 sz = ImGui::CalcTextSize(text);
     ImVec2 pos { 12.f, 12.f };
