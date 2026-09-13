@@ -1,6 +1,7 @@
 #include "il2cpp.h"
 #include "offsets.h"
 #include <android/log.h>
+#include <cstdio>
 #include <cstring>
 #include <dlfcn.h>
 #include <link.h>
