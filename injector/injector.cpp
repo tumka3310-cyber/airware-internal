@@ -16,13 +16,7 @@
 #include <sys/uio.h>
 #include <sys/types.h>
 #include <elf.h>
-
-struct user_pt_regs {
-    uint64_t regs[31];
-    uint64_t sp;
-    uint64_t pc;
-    uint64_t pstate;
-};
+#include <asm/ptrace.h>
 
 static long peek(pid_t pid, uintptr_t addr) {
     errno = 0;
@@ -135,8 +129,10 @@ int main(int argc, char** argv) {
     regs = saved;
 
     uintptr_t dlopen_addr = resolve_dlopen_remote(pid);
-    if (!dlopen_addr) { fprintf(stderr, "[-] dlopen resolve failed\n");
-                        ptrace(PTRACE_DETACH, pid, 0, 0); return 1; }
+    if (!dlopen_addr) {
+        fprintf(stderr, "[-] dlopen resolve failed\n");
+        ptrace(PTRACE_DETACH, pid, 0, 0); return 1;
+    }
     fprintf(stderr, "[+] remote dlopen = 0x%lx\n", (unsigned long)dlopen_addr);
 
     uintptr_t str_addr = saved.sp - 0x400;
