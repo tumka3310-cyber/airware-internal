@@ -124,9 +124,9 @@ Il2CppClass* find_class(const char* ns, const char* name) {
 Il2CppMethod* find_method(Il2CppClass* klass, const char* name) {
     if (!klass) return nullptr;
     void* it = nullptr;
-    while (auto m = class_get_methods(klass, &it)) {
+    while (auto m = static_cast<Il2CppMethod*>(class_get_methods(klass, &it))) {
         const char* n = method_get_name(m);
-        if (n && !strcmp(n, name)) return (Il2CppMethod*)m;
+        if (n && !strcmp(n, name)) return m;
     }
     return nullptr;
 }
@@ -134,9 +134,9 @@ Il2CppMethod* find_method(Il2CppClass* klass, const char* name) {
 Il2CppField* find_field(Il2CppClass* klass, const char* name) {
     if (!klass) return nullptr;
     void* it = nullptr;
-    while (auto f = class_get_fields(klass, &it)) {
+    while (auto f = static_cast<Il2CppField*>(class_get_fields(klass, &it))) {
         const char* n = field_get_name(f);
-        if (n && !strcmp(n, name)) return (Il2CppField*)f;
+        if (n && !strcmp(n, name)) return f;
     }
     return nullptr;
 }
@@ -144,6 +144,7 @@ Il2CppField* find_field(Il2CppClass* klass, const char* name) {
 void* method_pointer(Il2CppMethod* m) {
     return m ? *reinterpret_cast<void**>(m) : nullptr;
 }
+
 uint32_t field_offset(Il2CppClass* k, const char* n) {
     auto f = find_field(k, n);
     return f ? field_get_offset(f) : 0;
