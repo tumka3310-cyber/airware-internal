@@ -7,10 +7,10 @@
 
 namespace aimbot {
 
-static game::Player* pick(const game::Camera& cam) {
-    game::Player* best = nullptr;
+static const game::Player* pick(const game::Camera& cam) {
+    const game::Player* best = nullptr;
     float best_fov = cfg::aimbot.fov;
-    for (auto& p : game::players()) {
+    for (const auto& p : game::players()) {
         if (p.dead) continue;
         if (p.ptr == game::local_player()) continue;
 
