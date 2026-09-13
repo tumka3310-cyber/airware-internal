@@ -1,0 +1,45 @@
+name: Build Airware Android
+
+on:
+  push: { branches: [ main, master ] }
+  workflow_dispatch:
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with: { submodules: recursive }
+
+      - name: Setup NDK
+        uses: nttld/setup-ndk@v1
+        with:
+          ndk-version: r26b
+          add-to-path: true
+
+      - name: Configure CMake
+        run: |
+          cmake -B build -G Ninja \
+            -DCMAKE_TOOLCHAIN_FILE=$ANDROID_NDK_HOME/build/cmake/android.toolchain.cmake \
+            -DANDROID_ABI=arm64-v8a \
+            -DANDROID_PLATFORM=android-26 \
+            -DCMAKE_BUILD_TYPE=Release
+
+      - name: Build
+        run: cmake --build build --parallel
+
+      - name: Package
+        run: |
+          mkdir -p dist/airware
+          cp build/libairware.so   dist/airware/
+          cp build/injector        dist/airware/
+          cp scripts/launch.sh     dist/airware/
+          chmod +x dist/airware/launch.sh dist/airware/injector
+          (cd dist && zip -r AirwareAndroid.zip airware)
+
+      - name: Upload
+        uses: actions/upload-artifact@v4
+        with:
+          name: AirwareAndroid
+          path: dist/AirwareAndroid.zip
+          if-no-files-found: error
